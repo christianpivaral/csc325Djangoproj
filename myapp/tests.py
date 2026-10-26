@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse, resolve
+from rest_framework.test import APITestCase
 
 from myapp import views
 
@@ -29,6 +30,21 @@ class AboutViewTests(TestCase):
     def test_about_content(self):
         response = self.client.get(reverse('about'))
         self.assertContains(response, 'About Page')
+
+
+class ApiStatusTests(APITestCase):
+    def test_api_status_returns_200(self):
+        response = self.client.get(reverse('api-status'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_api_status_returns_json(self):
+        response = self.client.get(reverse('api-status'))
+        self.assertEqual(response['Content-Type'], 'application/json')
+        self.assertEqual(response.json()['status'], 'ok')
+
+    def test_api_status_rejects_post(self):
+        response = self.client.post(reverse('api-status'))
+        self.assertEqual(response.status_code, 405)
 
 
 class MissingPageTests(TestCase):
