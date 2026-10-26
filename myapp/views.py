@@ -16,4 +16,5 @@ def api_status(request):
     return Response({
         'status': 'ok',
         'message': 'CSC325 Django REST API is running.',
+        'course': 'CSC 325',
     })
