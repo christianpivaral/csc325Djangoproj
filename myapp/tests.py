@@ -46,6 +46,10 @@ class ApiStatusTests(APITestCase):
         response = self.client.post(reverse('api-status'))
         self.assertEqual(response.status_code, 405)
 
+    def test_api_status_includes_course(self):
+        response = self.client.get(reverse('api-status'))
+        self.assertEqual(response.json()['course'], 'CSC 325')
+
 
 class MissingPageTests(TestCase):
     def test_unknown_url_returns_404(self):
